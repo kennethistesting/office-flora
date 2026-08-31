@@ -1,0 +1,20 @@
+{
+  "slug": "phalaenopsis-orchid-001",
+  "captured_at": "2026-08-31",
+  "status": "published",
+  "flower_name": "Phalaenopsis orchid",
+  "common_name": "Moth orchid",
+  "scientific_name": "Phalaenopsis",
+  "confidence": 98,
+  "arrangement_style": "Minimalist / sculptural",
+  "notes": "Creamy white petals with a vivid orange-yellow lip. Sparse vertical stems and generous negative space give the arrangement an architectural feel.",
+  "design_notes": "The dark stems act almost like drawn lines, while the moss creates a secondary focal point beneath the flowers.",
+  "dominant_colors": ["#f7f4e9", "#ffe6a3", "#e69a18", "#6b8123", "#2b2b2b"],
+  "tags": ["orchid", "white", "sculptural", "indoor", "moss"],
+  "identification_candidates": [
+    {"name": "Phalaenopsis orchid", "confidence": 98}
+  ],
+  "needs_review": false,
+  "photo": "photo.jpeg",
+  "illustration": "illustration.png"
+}
