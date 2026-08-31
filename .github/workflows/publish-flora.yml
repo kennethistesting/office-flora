@@ -1,0 +1,52 @@
+name: Publish Office Flora Entry
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'publish-queue/**/entry.json'
+      - 'publish-queue/**/*.base64'
+  workflow_dispatch:
+    inputs:
+      manifest:
+        description: 'Path to entry.json'
+        required: true
+        default: 'publish-queue/example/entry.json'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Find manifest
+        id: manifest
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "path=${{ inputs.manifest }}" >> "$GITHUB_OUTPUT"
+          else
+            MANIFEST=$(git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA" | grep '^publish-queue/.*/entry.json$' | head -n 1)
+            if [ -z "$MANIFEST" ]; then
+              echo "No entry.json was added or changed in this commit."
+              exit 0
+            fi
+            echo "path=$MANIFEST" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish entry to Supabase
+        if: steps.manifest.outputs.path != ''
+        env:
+          OFFICE_FLORA_PUBLISH_TOKEN: ${{ secrets.OFFICE_FLORA_PUBLISH_TOKEN }}
+        run: node scripts/publish-flora-entry.mjs "${{ steps.manifest.outputs.path }}"
