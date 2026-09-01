@@ -1,0 +1,23 @@
+.gallery {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 250px));
+  gap: 40px 24px;
+  justify-content: start;
+}
+
+.flora-card {
+  width: 100%;
+  max-width: 250px;
+}
+
+@media (max-width: 850px) {
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 250px));
+  }
+}
+
+@media (max-width: 520px) {
+  .gallery {
+    grid-template-columns: minmax(0, 250px);
+    justify-content: center;
+  }
+}
