@@ -1,0 +1,31 @@
+{
+  "slug": "008-white-lily-hydrangea-arrangement",
+  "flower_name": "White lily and hydrangea arrangement",
+  "common_name": "Oriental lily and hydrangea",
+  "scientific_name": "Lilium hybrid and Hydrangea macrophylla",
+  "captured_at": "2026-08-05",
+  "confidence": 97,
+  "arrangement_style": "Compact / rounded",
+  "notes": "Open white lilies with dark burgundy anthers and fresh green buds surround a soft center of pale blue hydrangea. The compact, rounded composition balances large sculptural petals with a cool-toned cushion of smaller florets.",
+  "colors": [
+    "#f5f0e3",
+    "#fffdf5",
+    "#9eafd3",
+    "#7a963e",
+    "#4a1e28",
+    "#294e35"
+  ],
+  "tags": [
+    "lily",
+    "hydrangea",
+    "white",
+    "blue",
+    "oriental lily",
+    "mixed arrangement",
+    "compact arrangement"
+  ],
+  "photo_base64_file": "publish-queue/008-white-lily-hydrangea-arrangement/photo.base64",
+  "photo_type": "image/jpeg",
+  "illustration_base64_file": "publish-queue/008-white-lily-hydrangea-arrangement/illustration.base64",
+  "illustration_type": "image/jpeg"
+}
