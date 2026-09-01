@@ -1,0 +1,28 @@
+{
+  "slug": "006-ginseng-ficus-bonsai",
+  "flower_name": "Ginseng ficus bonsai",
+  "common_name": "Ginseng ficus",
+  "scientific_name": "Ficus microcarpa",
+  "captured_at": "2026-09-01",
+  "confidence": 96,
+  "arrangement_style": "Bonsai / informal upright",
+  "notes": "A compact ginseng ficus with a swollen, exposed root base and dense canopy of glossy oval leaves. Moss, gravel, and a single accent stone create a miniature landscape in a shallow dark container.",
+  "colors": [
+    "deep green",
+    "moss brown",
+    "warm gray",
+    "tan",
+    "charcoal"
+  ],
+  "tags": [
+    "bonsai",
+    "ficus",
+    "ginseng ficus",
+    "foliage",
+    "indoor plant",
+    "miniature landscape",
+    "moss"
+  ],
+  "photo_base64_file": "publish-queue/006-ginseng-ficus-bonsai/photo.base64",
+  "photo_type": "image/jpeg"
+}
