@@ -9,9 +9,32 @@
   max-width: 250px;
 }
 
+/* The current botanical plates are intentionally lightweight.
+   Never upscale them on the detail page, or they become visibly soft. */
+.study-section {
+  grid-template-columns: minmax(260px, .55fr) 250px;
+  justify-content: start;
+  align-items: start;
+}
+
+.study-section img {
+  width: 250px;
+  max-width: 100%;
+  height: auto;
+  justify-self: start;
+}
+
 @media (max-width: 850px) {
   .gallery {
     grid-template-columns: repeat(2, minmax(0, 250px));
+  }
+
+  .study-section {
+    grid-template-columns: 1fr;
+  }
+
+  .study-section img {
+    justify-self: start;
   }
 }
 
@@ -19,5 +42,9 @@
   .gallery {
     grid-template-columns: minmax(0, 250px);
     justify-content: center;
+  }
+
+  .study-section img {
+    justify-self: center;
   }
 }
