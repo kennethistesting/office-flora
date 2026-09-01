@@ -24,10 +24,7 @@
     "eucalyptus",
     "seasonal arrangement"
   ],
-  "photo_base64_files": [
-    "publish-queue/011-autumn-pumpkin-on-a-stick-arrangement/photo.part-001.base64",
-    "publish-queue/011-autumn-pumpkin-on-a-stick-arrangement/photo.part-002.base64"
-  ],
+  "photo_base64_file": "publish-queue/011-autumn-pumpkin-on-a-stick-arrangement/photo.retry.base64",
   "photo_type": "image/jpeg",
   "illustration_base64_file": "publish-queue/011-autumn-pumpkin-on-a-stick-arrangement/illustration.base64",
   "illustration_type": "image/jpeg"
