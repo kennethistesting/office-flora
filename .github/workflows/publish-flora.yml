@@ -15,15 +15,18 @@ on:
         default: 'publish-queue/example/entry.json'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   publish:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -40,6 +43,7 @@ jobs:
             MANIFEST=$(git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA" | grep '^publish-queue/.*/entry.json$' | head -n 1)
             if [ -z "$MANIFEST" ]; then
               echo "No entry.json was added or changed in this commit."
+              echo "path=" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             echo "path=$MANIFEST" >> "$GITHUB_OUTPUT"
@@ -50,3 +54,24 @@ jobs:
         env:
           OFFICE_FLORA_PUBLISH_TOKEN: ${{ secrets.OFFICE_FLORA_PUBLISH_TOKEN }}
         run: node scripts/publish-flora-entry.mjs "${{ steps.manifest.outputs.path }}"
+
+      - name: Remove publish queue files after success
+        if: steps.manifest.outputs.path != ''
+        shell: bash
+        run: |
+          DIR=$(dirname "${{ steps.manifest.outputs.path }}")
+          rm -rf "$DIR"
+
+      - name: Commit queue cleanup
+        if: steps.manifest.outputs.path != ''
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git commit -m "Cleanup published Office Flora queue"
+          git push
