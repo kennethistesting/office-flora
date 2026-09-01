@@ -59,15 +59,7 @@ function App() {
     const q = query.trim().toLowerCase()
     if (!q) return entries
     return entries.filter((entry) =>
-      [
-        entry.flower_name,
-        entry.common_name,
-        entry.scientific_name,
-        entry.arrangement_style,
-        entry.notes,
-        entry.design_notes,
-        ...(entry.tags || []),
-      ]
+      [entry.flower_name, entry.common_name, entry.scientific_name, entry.arrangement_style, entry.notes, entry.design_notes, ...(entry.tags || [])]
         .join(' ')
         .toLowerCase()
         .includes(q),
@@ -100,7 +92,7 @@ function App() {
 
       <section className="gallery">
         {visible.map((entry, i) => <button className="flora-card" key={entry.id} onClick={() => setSelected(entry)}>
-          <div className="card-image-wrap"><img src={entry.photo_url} alt={entry.flower_name || 'Flower'} /></div>
+          <div className="card-image-wrap"><img src={entry.illustration_url || entry.photo_url} alt={`Botanical study of ${entry.flower_name || 'flower'}`} /></div>
           <div className="card-meta">
             <div>
               <p className="eyebrow tiny">ENTRY {String(i + 1).padStart(3, '0')}</p>
@@ -127,7 +119,7 @@ function Detail({ entry, onBack }) {
   return <main className="page detail-page">
     <button className="back" onClick={onBack}><ArrowLeft size={17} /> Back to archive</button>
     <div className="detail-grid">
-      <div className="detail-photo"><img src={entry.photo_url} alt={entry.flower_name || 'Flower'} /></div>
+      <div className="detail-photo"><img src={entry.photo_url} alt={`Original photograph of ${entry.flower_name || 'flower'}`} /></div>
       <article className="detail-copy">
         <p className="eyebrow">OFFICE FLORA</p>
         <h1 className="display detail-title">{entry.flower_name || 'Unknown flower'}</h1>
@@ -145,10 +137,10 @@ function Detail({ entry, onBack }) {
       </article>
     </div>
 
-    <section className="study-section">
+    {entry.illustration_url && <section className="study-section">
       <div><p className="eyebrow">BOTANICAL STUDY</p><h2 className="display">A drawn memory of the arrangement.</h2></div>
-      {entry.illustration_url ? <img src={entry.illustration_url} alt={`Botanical study of ${entry.flower_name}`} /> : <div className="study-empty">No botanical study for this entry.</div>}
-    </section>
+      <img src={entry.illustration_url} alt={`Botanical study of ${entry.flower_name}`} />
+    </section>}
   </main>
 }
 
