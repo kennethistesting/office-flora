@@ -41,7 +41,8 @@ function App() {
         .from('flora_entries')
         .select('*')
         .eq('status', 'published')
-        .order('captured_at', { ascending: false })
+        .order('captured_at', { ascending: true })
+        .order('slug', { ascending: true })
 
       if (error) {
         setMessage('The archive could not be loaded right now.')
