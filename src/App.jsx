@@ -41,8 +41,8 @@ function App() {
         .from('flora_entries')
         .select('*')
         .eq('status', 'published')
-        .order('captured_at', { ascending: true })
-        .order('slug', { ascending: true })
+        .order('captured_at', { ascending: false })
+        .order('slug', { ascending: false })
 
       if (error) {
         setMessage('The archive could not be loaded right now.')
@@ -96,7 +96,7 @@ function App() {
           <div className="card-image-wrap"><img src={entry.illustration_url || entry.photo_url} alt={`Botanical study of ${entry.flower_name || 'flower'}`} /></div>
           <div className="card-meta">
             <div>
-              <p className="eyebrow tiny">ENTRY {String(i + 1).padStart(3, '0')}</p>
+              <p className="eyebrow tiny">ENTRY {String(entries.length - entries.findIndex(item => item.id === entry.id)).padStart(3, '0')}</p>
               <h2 className="display">{entry.flower_name || 'Unknown flower'}</h2>
               <p className="muted">{entry.common_name || entry.arrangement_style}</p>
             </div>
