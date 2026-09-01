@@ -118,29 +118,33 @@ function Detail({ entry, onBack }) {
   const colors = entry.dominant_colors || entry.colors || []
   return <main className="page detail-page">
     <button className="back" onClick={onBack}><ArrowLeft size={17} /> Back to archive</button>
-    <div className="detail-grid">
-      <div className="detail-photo"><img src={entry.photo_url} alt={`Original photograph of ${entry.flower_name || 'flower'}`} /></div>
-      <article className="detail-copy">
-        <p className="eyebrow">OFFICE FLORA</p>
-        <h1 className="display detail-title">{entry.flower_name || 'Unknown flower'}</h1>
-        <p className="detail-common">{entry.common_name}</p>
-        <div className="facts">
-          <Fact label="Confidence" value={entry.confidence ? `${entry.confidence}%` : 'Uncertain'} />
-          <Fact label="Captured" value={formatDate(entry.captured_at)} />
-          <Fact label="Arrangement" value={entry.arrangement_style || '—'} />
-          <Fact label="Scientific name" value={entry.scientific_name || '—'} />
-        </div>
-        {colors.length > 0 && <div><p className="eyebrow tiny">PALETTE</p><div className="swatches">{colors.map(c => <span key={c} className="swatch" style={{ background: c }} title={c} />)}</div></div>}
-        <p className="detail-notes">{entry.notes}</p>
-        {entry.design_notes && <div className="design-note"><strong>Design note</strong><p>{entry.design_notes}</p></div>}
-        <div className="tags">{(entry.tags || []).map(tag => <span key={tag}>{tag}</span>)}</div>
-      </article>
-    </div>
 
-    {entry.illustration_url && <section className="study-section">
-      <div><p className="eyebrow">BOTANICAL STUDY</p><h2 className="display">A drawn memory of the arrangement.</h2></div>
-      <img src={entry.illustration_url} alt={`Botanical study of ${entry.flower_name}`} />
-    </section>}
+    <section className={`detail-comparison ${entry.illustration_url ? '' : 'single'}`}>
+      <figure className="comparison-panel">
+        <div className="comparison-image"><img src={entry.photo_url} alt={`Original photograph of ${entry.flower_name || 'flower'}`} /></div>
+        <figcaption><span>ORIGINAL PHOTOGRAPH</span><em>{formatDate(entry.captured_at)}</em></figcaption>
+      </figure>
+      {entry.illustration_url && <figure className="comparison-panel">
+        <div className="comparison-image botanical"><img src={entry.illustration_url} alt={`Botanical study of ${entry.flower_name || 'flower'}`} /></div>
+        <figcaption><span>BOTANICAL STUDY</span><em>Illustration on paper</em></figcaption>
+      </figure>}
+    </section>
+
+    <article className="detail-copy detail-copy-below">
+      <p className="eyebrow">OFFICE FLORA</p>
+      <h1 className="display detail-title">{entry.flower_name || 'Unknown flower'}</h1>
+      <p className="detail-common">{entry.common_name}</p>
+      <div className="facts">
+        <Fact label="Confidence" value={entry.confidence ? `${entry.confidence}%` : 'Uncertain'} />
+        <Fact label="Captured" value={formatDate(entry.captured_at)} />
+        <Fact label="Arrangement" value={entry.arrangement_style || '—'} />
+        <Fact label="Scientific name" value={entry.scientific_name || '—'} />
+      </div>
+      {colors.length > 0 && <div><p className="eyebrow tiny">PALETTE</p><div className="swatches">{colors.map(c => <span key={c} className="swatch" style={{ background: c }} title={c} />)}</div></div>}
+      <p className="detail-notes">{entry.notes}</p>
+      {entry.design_notes && <div className="design-note"><strong>Design note</strong><p>{entry.design_notes}</p></div>}
+      <div className="tags">{(entry.tags || []).map(tag => <span key={tag}>{tag}</span>)}</div>
+    </article>
   </main>
 }
 
