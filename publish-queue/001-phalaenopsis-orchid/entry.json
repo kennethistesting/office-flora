@@ -7,12 +7,22 @@
   "confidence": 98,
   "arrangement_style": "Minimalist / sculptural",
   "notes": "Creamy white Phalaenopsis blooms with warm orange-yellow centers. The arrangement uses long arching stems, glossy basal leaves, decorative moss, and generous negative space to create an airy, architectural composition.",
-  "colors": ["cream", "white", "pale yellow", "orange", "green"],
-  "tags": ["orchid", "phalaenopsis", "moth orchid", "sculptural", "indoor", "moss"],
-  "illustration_base64_files": [
-    "publish-queue/001-phalaenopsis-orchid/illustration.part01.base64",
-    "publish-queue/001-phalaenopsis-orchid/illustration.part02.base64",
-    "publish-queue/001-phalaenopsis-orchid/illustration.part03.base64"
+  "colors": [
+    "#f7f4e9",
+    "#ffe6a3",
+    "#e69a18",
+    "#6b8123",
+    "#2b2b2b"
   ],
-  "illustration_type": "image/jpeg"
+  "tags": [
+    "orchid",
+    "phalaenopsis",
+    "moth orchid",
+    "white",
+    "sculptural",
+    "indoor",
+    "moss"
+  ],
+  "photo_base64_file": "publish-queue/001-phalaenopsis-orchid/photo.base64",
+  "photo_type": "image/jpeg"
 }
