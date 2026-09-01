@@ -15,9 +15,12 @@ const functionUrl = 'https://wkineyxaltgwikhghsox.supabase.co/functions/v1/publi
 
 const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'))
 
-const photoBase64 = (await fs.readFile(manifest.photo_base64_file, 'utf8')).trim()
-let illustrationBase64 = null
+let photoBase64 = null
+if (manifest.photo_base64_file) {
+  photoBase64 = (await fs.readFile(manifest.photo_base64_file, 'utf8')).trim()
+}
 
+let illustrationBase64 = null
 if (manifest.illustration_base64_file) {
   illustrationBase64 = (await fs.readFile(manifest.illustration_base64_file, 'utf8')).trim()
 }
