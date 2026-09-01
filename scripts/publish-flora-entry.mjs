@@ -15,15 +15,26 @@ const functionUrl = 'https://wkineyxaltgwikhghsox.supabase.co/functions/v1/publi
 
 const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'))
 
-let photoBase64 = null
-if (manifest.photo_base64_file) {
-  photoBase64 = (await fs.readFile(manifest.photo_base64_file, 'utf8')).trim()
+async function readBase64({ file, files }) {
+  const paths = files?.length ? files : file ? [file] : []
+  if (!paths.length) return null
+
+  const parts = []
+  for (const path of paths) {
+    parts.push((await fs.readFile(path, 'utf8')).trim())
+  }
+  return parts.join('')
 }
 
-let illustrationBase64 = null
-if (manifest.illustration_base64_file) {
-  illustrationBase64 = (await fs.readFile(manifest.illustration_base64_file, 'utf8')).trim()
-}
+const photoBase64 = await readBase64({
+  file: manifest.photo_base64_file,
+  files: manifest.photo_base64_files,
+})
+
+const illustrationBase64 = await readBase64({
+  file: manifest.illustration_base64_file,
+  files: manifest.illustration_base64_files,
+})
 
 const payload = {
   slug: manifest.slug,
