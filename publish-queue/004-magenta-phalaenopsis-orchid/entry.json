@@ -1,0 +1,28 @@
+{
+  "slug": "004-magenta-phalaenopsis-orchid",
+  "flower_name": "Magenta Phalaenopsis orchid",
+  "common_name": "Moth orchid",
+  "scientific_name": "Phalaenopsis",
+  "captured_at": "2026-09-01",
+  "confidence": 98,
+  "arrangement_style": "Minimalist / sculptural",
+  "notes": "A vivid magenta Phalaenopsis is trained along an arching stem above broad glossy leaves, with moss accents and a small white marbled vessel. The restrained presentation emphasizes the orchid's silhouette against the city view.",
+  "colors": [
+    "magenta",
+    "deep purple",
+    "forest green",
+    "moss green",
+    "white"
+  ],
+  "tags": [
+    "orchid",
+    "phalaenopsis",
+    "moth orchid",
+    "magenta",
+    "moss",
+    "indoor",
+    "sculptural"
+  ],
+  "illustration_base64_file": "publish-queue/004-magenta-phalaenopsis-orchid/illustration.base64",
+  "illustration_type": "image/jpeg"
+}
