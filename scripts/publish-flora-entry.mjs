@@ -40,6 +40,7 @@ const payload = {
   slug: manifest.slug,
   flower_name: manifest.flower_name,
   common_name: manifest.common_name ?? null,
+  scientific_name: manifest.scientific_name ?? null,
   captured_at: manifest.captured_at ?? null,
   confidence: manifest.confidence ?? null,
   arrangement_style: manifest.arrangement_style ?? null,
