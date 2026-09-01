@@ -1,0 +1,27 @@
+{
+  "slug": "002-phalaenopsis-orchid",
+  "flower_name": "Phalaenopsis orchid",
+  "common_name": "Moth orchid",
+  "scientific_name": "Phalaenopsis",
+  "captured_at": "2026-08-26",
+  "confidence": 98,
+  "arrangement_style": "Minimalist / compact",
+  "notes": "A compact magenta Phalaenopsis orchid with finely veined petals, glossy deep-green leaves, a moss-wrapped support, and a clean white ceramic vessel.",
+  "colors": [
+    "#a71f78",
+    "#df8bb6",
+    "#f3e6cf",
+    "#e2b73a",
+    "#254b38"
+  ],
+  "tags": [
+    "orchid",
+    "phalaenopsis",
+    "moth orchid",
+    "pink",
+    "moss",
+    "indoor"
+  ],
+  "illustration_base64_file": "publish-queue/002-phalaenopsis-orchid/illustration.base64",
+  "illustration_type": "image/jpeg"
+}
