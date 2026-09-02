@@ -142,6 +142,16 @@ function Reader({ entry, index, total, onClose, onPrevious, onNext }) {
     </header>
 
     <article className="book-spread">
+      <button
+        className="edge-navigation edge-navigation-previous"
+        type="button"
+        onClick={onPrevious}
+        disabled={index === 0}
+        aria-label="Previous archive entry"
+      >
+        <ChevronLeft size={22} />
+      </button>
+
       <section className="image-page">
         <p className="plate-number">Office Flora · Plate {plate}</p>
 
@@ -168,10 +178,12 @@ function Reader({ entry, index, total, onClose, onPrevious, onNext }) {
       </section>
 
       <aside className="entry-page">
-        <div>
-          <p className="entry-label">Entry {String(entryNumber).padStart(3, '0')}</p>
-          <h1 className="entry-title">{entry.flower_name || 'Unknown flower'}</h1>
-          <p className="scientific-name">{entry.scientific_name || entry.common_name || 'Identification pending'}</p>
+        <div className="entry-content">
+          <div className="entry-heading">
+            <p className="entry-label">Entry {String(entryNumber).padStart(3, '0')}</p>
+            <h1 className="entry-title">{entry.flower_name || 'Unknown flower'}</h1>
+            <p className="scientific-name">{entry.scientific_name || entry.common_name || 'Identification pending'}</p>
+          </div>
 
           <dl className="entry-facts">
             <Fact label="Captured" value={formatDate(entry.captured_at)} />
@@ -208,6 +220,16 @@ function Reader({ entry, index, total, onClose, onPrevious, onNext }) {
           </button>
         </nav>
       </aside>
+
+      <button
+        className="edge-navigation edge-navigation-next"
+        type="button"
+        onClick={onNext}
+        disabled={index === total - 1}
+        aria-label="Next archive entry"
+      >
+        <ChevronRight size={22} />
+      </button>
     </article>
   </main>
 }
