@@ -1,0 +1,31 @@
+{
+  "slug": "012-purple-spider-orchid-arrangement",
+  "flower_name": "Purple spider orchid arrangement",
+  "common_name": "Spider orchid hybrid",
+  "scientific_name": "\u00d7 Bratonia (Brassia \u00d7 Miltonia hybrid)",
+  "captured_at": "2026-09-02",
+  "confidence": 82,
+  "arrangement_style": "Sculptural / multi-spike",
+  "notes": "A large multi-stem spider orchid displays narrow, star-shaped burgundy-purple blooms with pale speckling above arching dark-green strap leaves. Four principal flower spikes are supported by bamboo stakes and gathered in a low matte-black vessel, creating a tall, airy silhouette with repeated points of color.",
+  "colors": [
+    "#4A173F",
+    "#7A3B6B",
+    "#C2A3AF",
+    "#203B2A",
+    "#66734A",
+    "#A78255"
+  ],
+  "tags": [
+    "orchid",
+    "spider orchid",
+    "Bratonia",
+    "Brassia hybrid",
+    "purple",
+    "multi-spike",
+    "sculptural arrangement"
+  ],
+  "photo_base64_file": "publish-queue/012-purple-spider-orchid-arrangement/photo.base64",
+  "photo_type": "image/jpeg",
+  "illustration_base64_file": "publish-queue/012-purple-spider-orchid-arrangement/illustration.base64",
+  "illustration_type": "image/jpeg"
+}
