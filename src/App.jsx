@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { configured, supabase } from './supabase'
 
@@ -131,6 +131,33 @@ function Reader({ entry, index, total, onClose, onPrevious, onNext }) {
   const entryNumber = total - index
   const plate = toRoman(entryNumber)
   const hasIllustration = Boolean(entry.illustration_url)
+  const originalImageRef = useRef(null)
+  const [matchedImageHeight, setMatchedImageHeight] = useState(null)
+
+  useEffect(() => {
+    const originalImage = originalImageRef.current
+    if (!originalImage || !hasIllustration) return undefined
+    setMatchedImageHeight(null)
+
+    const updateHeight = () => {
+      const height = Math.round(originalImage.getBoundingClientRect().height)
+      if (height > 0) setMatchedImageHeight(height)
+    }
+
+    const image = originalImage.querySelector('img')
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(updateHeight)
+
+    updateHeight()
+    observer?.observe(originalImage)
+    image?.addEventListener('load', updateHeight)
+    window.addEventListener('resize', updateHeight)
+
+    return () => {
+      observer?.disconnect()
+      image?.removeEventListener('load', updateHeight)
+      window.removeEventListener('resize', updateHeight)
+    }
+  }, [entry.photo_url, hasIllustration])
 
   return <main className="reader-shell">
     <header className="reader-toolbar">
@@ -158,14 +185,17 @@ function Reader({ entry, index, total, onClose, onPrevious, onNext }) {
         <div className={`image-pair ${hasIllustration ? '' : 'single'}`}>
           <figure className="image-study">
             <figcaption>Original photograph</figcaption>
-            <div className="entry-image original-image">
+            <div className="entry-image original-image" ref={originalImageRef}>
               <img src={entry.photo_url} alt={`Original photograph of ${entry.flower_name || 'flower arrangement'}`} />
             </div>
           </figure>
 
           {hasIllustration && <figure className="image-study">
             <figcaption>Botanical study</figcaption>
-            <div className="entry-image botanical-image">
+            <div
+              className="entry-image botanical-image"
+              style={matchedImageHeight ? { '--matched-image-height': `${matchedImageHeight}px` } : undefined}
+            >
               <img src={entry.illustration_url} alt={`Botanical study of ${entry.flower_name || 'flower arrangement'}`} />
             </div>
           </figure>}

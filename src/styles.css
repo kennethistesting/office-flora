@@ -387,6 +387,17 @@ img {
   filter: saturate(.92) contrast(.97) sepia(.06);
 }
 
+@media (min-width: 1041px) {
+  .botanical-image {
+    height: var(--matched-image-height, auto);
+  }
+
+  .botanical-image img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
 .plate-footer {
   display: flex;
   justify-content: space-between;
