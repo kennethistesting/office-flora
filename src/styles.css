@@ -735,6 +735,16 @@ img {
     display: none;
   }
 
+  .edge-navigation {
+    position: fixed;
+    top: 50%;
+    z-index: 20;
+    display: inline-flex;
+    width: 44px;
+    min-height: 110px;
+    background: rgb(234 217 180 / 90%);
+  }
+
   .image-pair {
     grid-template-columns: 1fr;
     gap: 30px;
