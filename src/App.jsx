@@ -91,11 +91,6 @@ function App() {
   }
 
   return <div className="site-shell">
-    <header className="site-header">
-      <button className="brand" type="button" onClick={() => setReaderOpen(false)}>OFFICE FLORA</button>
-      <span className="header-note">A botanical archive · New York</span>
-    </header>
-
     <main className="cover-page">
       {!configured && <div className="setup-banner"><strong>Preview mode.</strong> Connect Supabase to load the public archive.</div>}
 
@@ -118,8 +113,6 @@ function App() {
             <span className="cover-subtitle">A botanical archive</span>
           </span>
         </button>
-
-        <p className="open-cue">Click the cover to open · {entries.length} {entries.length === 1 ? 'entry' : 'entries'}</p>
         {message && <p className="archive-message" role="status">{message}</p>}
       </section>
     </main>

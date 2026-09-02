@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Eagle+Lake&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap');
 
 :root {
   font-family: 'DM Sans', Arial, sans-serif;
@@ -51,37 +51,6 @@ img {
   min-height: 100vh;
 }
 
-.site-header {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  min-height: 64px;
-  padding: 17px clamp(18px, 4vw, 58px);
-  background: #ead9b4;
-  border-bottom: 1px solid #9e8359;
-}
-
-.brand {
-  padding: 4px 0;
-  border: 0;
-  background: transparent;
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .22em;
-  cursor: pointer;
-}
-
-.header-note {
-  color: var(--muted);
-  font-family: Georgia, serif;
-  font-size: 13px;
-  font-style: italic;
-}
-
 .cover-page,
 .reader-shell {
   background-color: var(--canvas);
@@ -93,7 +62,7 @@ img {
 }
 
 .cover-page {
-  min-height: calc(100vh - 64px);
+  min-height: 100vh;
   padding: 32px clamp(18px, 4vw, 58px) 56px;
 }
 
@@ -101,7 +70,7 @@ img {
   display: grid;
   place-items: center;
   align-content: center;
-  min-height: calc(100vh - 152px);
+  min-height: calc(100vh - 88px);
 }
 
 .archive-cover {
@@ -194,8 +163,8 @@ img {
   position: absolute;
   z-index: 2;
   left: 24px;
+  right: 24px;
   bottom: 38px;
-  width: min(86%, 390px);
   padding: 18px 20px 17px;
   background: var(--green);
   box-shadow: 8px 8px 0 rgb(255 244 220 / 78%);
@@ -204,12 +173,11 @@ img {
 
 .cover-title {
   display: block;
-  font-family: 'Fraunces', 'Bodoni 72', Didot, Georgia, serif;
-  font-size: clamp(42px, 6vw, 67px);
-  font-weight: 800;
-  font-optical-sizing: auto;
-  line-height: .83;
-  letter-spacing: -.055em;
+  font-family: 'Eagle Lake', Georgia, serif;
+  font-size: clamp(24px, 8vw, 44px);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -.035em;
 }
 
 .cover-subtitle {
@@ -218,15 +186,6 @@ img {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: .15em;
-  text-transform: uppercase;
-}
-
-.open-cue {
-  margin: 24px 0 0;
-  color: #2f2d26;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .11em;
   text-transform: uppercase;
 }
 
@@ -695,16 +654,8 @@ img {
 }
 
 @media (max-width: 660px) {
-  .site-header {
-    min-height: 58px;
-  }
-
-  .header-note {
-    display: none;
-  }
-
   .cover-page {
-    min-height: calc(100vh - 58px);
+    min-height: 100vh;
     padding-inline: 14px;
   }
 
@@ -714,13 +665,9 @@ img {
 
   .cover-title-block {
     left: 18px;
+    right: 18px;
     bottom: 30px;
-    width: 86%;
     padding: 15px 16px;
-  }
-
-  .cover-title {
-    font-size: clamp(38px, 11vw, 54px);
   }
 
   .reader-shell {
