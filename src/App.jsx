@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { ArrowLeft, Loader2, Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { configured, supabase } from './supabase'
 
 const sample = {
@@ -14,19 +14,23 @@ const sample = {
   arrangement_style: 'Minimalist / sculptural',
   notes: 'Creamy white petals with a vivid orange-yellow lip. Sparse vertical stems and generous negative space give the arrangement an architectural feel.',
   design_notes: 'The dark stems act almost like drawn lines, while the moss creates a secondary focal point beneath the flowers.',
-  dominant_colors: ['#f7f4e9','#ffe6a3','#e69a18','#6b8123','#2b2b2b'],
-  tags: ['orchid','white','sculptural','indoor','moss'],
+  dominant_colors: ['#f7f4e9', '#ffe6a3', '#e69a18', '#6b8123', '#2b2b2b'],
+  tags: ['orchid', 'white', 'sculptural', 'indoor', 'moss'],
   photo_url: './orchid-sample.jpeg',
   illustration_url: './orchid-botanical.png',
   status: 'published',
   sample: true,
 }
 
+const coverImages = Array.from({ length: 11 }, (_, index) =>
+  `./cover-collage/entry-${String(index + 1).padStart(3, '0')}.webp`,
+)
+
 function App() {
   const [loading, setLoading] = useState(true)
   const [entries, setEntries] = useState([])
-  const [query, setQuery] = useState('')
-  const [selected, setSelected] = useState(null)
+  const [readerOpen, setReaderOpen] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -56,101 +60,190 @@ function App() {
     loadEntries()
   }, [])
 
-  const visible = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return entries
-    return entries.filter((entry) =>
-      [entry.flower_name, entry.common_name, entry.scientific_name, entry.arrangement_style, entry.notes, entry.design_notes, ...(entry.tags || [])]
-        .join(' ')
-        .toLowerCase()
-        .includes(q),
-    )
-  }, [entries, query])
+  useEffect(() => {
+    if (!readerOpen) return undefined
 
-  if (loading) return <Centered><Loader2 className="spin" /> Loading Office Flora…</Centered>
-  if (selected) return <Detail entry={selected} onBack={() => setSelected(null)} />
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') setReaderOpen(false)
+      if (event.key === 'ArrowLeft') setCurrentIndex(index => Math.max(0, index - 1))
+      if (event.key === 'ArrowRight') setCurrentIndex(index => Math.min(entries.length - 1, index + 1))
+    }
 
-  return <div>
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [entries.length, readerOpen])
+
+  if (loading) {
+    return <Centered><Loader2 className="spin" /> Loading Office Flora…</Centered>
+  }
+
+  const currentEntry = entries[currentIndex]
+
+  if (readerOpen && currentEntry) {
+    return <Reader
+      entry={currentEntry}
+      index={currentIndex}
+      total={entries.length}
+      onClose={() => setReaderOpen(false)}
+      onPrevious={() => setCurrentIndex(index => Math.max(0, index - 1))}
+      onNext={() => setCurrentIndex(index => Math.min(entries.length - 1, index + 1))}
+    />
+  }
+
+  return <div className="site-shell">
     <header className="site-header">
-      <button className="brand" onClick={() => setSelected(null)}>OFFICE FLORA</button>
-      <span className="header-note">A botanical archive</span>
+      <button className="brand" type="button" onClick={() => setReaderOpen(false)}>OFFICE FLORA</button>
+      <span className="header-note">A botanical archive · New York</span>
     </header>
 
-    <main className="page">
+    <main className="cover-page">
       {!configured && <div className="setup-banner"><strong>Preview mode.</strong> Connect Supabase to load the public archive.</div>}
-      <section className="hero">
-        <p className="eyebrow">AN ONGOING BOTANICAL ARCHIVE</p>
-        <h1 className="display hero-title">Flowers that passed<br />through the office.</h1>
-        <p className="hero-sub">Photograph them. Identify them. Remember them.</p>
+
+      <section className="cover-stage" aria-labelledby="cover-title">
+        <button
+          className="archive-cover"
+          type="button"
+          onClick={() => entries.length > 0 && setReaderOpen(true)}
+          aria-label="Open Flowers that passed through the office"
+          disabled={!entries.length}
+        >
+          <span className="cover-collage" aria-hidden="true">
+            {coverImages.map((src, index) => <span className={`cover-tile tile-${index + 1}`} key={src}>
+              <img src={src} alt="" />
+            </span>)}
+          </span>
+          <span className="cover-volume">VOL. I</span>
+          <span className="cover-title-block">
+            <span className="cover-title" id="cover-title">Flowers that<br />passed through<br />the office</span>
+            <span className="cover-subtitle">A botanical archive</span>
+          </span>
+        </button>
+
+        <p className="open-cue">Click the cover to open · {entries.length} {entries.length === 1 ? 'entry' : 'entries'}</p>
+        {message && <p className="archive-message" role="status">{message}</p>}
       </section>
-
-      <section className="toolbar">
-        <label className="search"><Search size={18} /><input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search orchid, white, sculptural…" /></label>
-        <span className="muted small">{visible.length} {visible.length === 1 ? 'entry' : 'entries'}</span>
-      </section>
-
-      {message && <p className="status archive-message">{message}</p>}
-
-      <section className="gallery">
-        {visible.map((entry, i) => <button className="flora-card" key={entry.id} onClick={() => setSelected(entry)}>
-          <div className="card-image-wrap"><img src={entry.illustration_url || entry.photo_url} alt={`Botanical study of ${entry.flower_name || 'flower'}`} /></div>
-          <div className="card-meta">
-            <div>
-              <p className="eyebrow tiny">ENTRY {String(entries.length - entries.findIndex(item => item.id === entry.id)).padStart(3, '0')}</p>
-              <h2 className="display">{entry.flower_name || 'Unknown flower'}</h2>
-              <p className="muted">{entry.common_name || entry.arrangement_style}</p>
-            </div>
-            <p className="muted small">{formatDate(entry.captured_at)}</p>
-          </div>
-        </button>)}
-      </section>
-
-      {!visible.length && !message && <section className="empty-state"><p className="display">Nothing found.</p><span>Try another flower, color, or style.</span></section>}
-
-      <footer className="site-footer">
-        <span>OFFICE FLORA</span>
-        <span>Ephemeral arrangements, permanently archived.</span>
-      </footer>
     </main>
   </div>
 }
 
-function Detail({ entry, onBack }) {
+function Reader({ entry, index, total, onClose, onPrevious, onNext }) {
   const colors = entry.dominant_colors || entry.colors || []
-  return <main className="page detail-page">
-    <button className="back" onClick={onBack}><ArrowLeft size={17} /> Back to archive</button>
+  const entryNumber = total - index
+  const plate = toRoman(entryNumber)
+  const hasIllustration = Boolean(entry.illustration_url)
 
-    <section className={`detail-comparison ${entry.illustration_url ? '' : 'single'}`}>
-      <figure className="comparison-panel">
-        <div className="comparison-image"><img src={entry.photo_url} alt={`Original photograph of ${entry.flower_name || 'flower'}`} /></div>
-        <figcaption><span>ORIGINAL PHOTOGRAPH</span><em>{formatDate(entry.captured_at)}</em></figcaption>
-      </figure>
-      {entry.illustration_url && <figure className="comparison-panel">
-        <div className="comparison-image botanical"><img src={entry.illustration_url} alt={`Botanical study of ${entry.flower_name || 'flower'}`} /></div>
-        <figcaption><span>BOTANICAL STUDY</span><em>Illustration on paper</em></figcaption>
-      </figure>}
-    </section>
+  return <main className="reader-shell">
+    <header className="reader-toolbar">
+      <button className="reader-back" type="button" onClick={onClose}>
+        <ArrowLeft size={16} /> Cover
+      </button>
+      <span>Botanical archive</span>
+      <span className="reader-count">Entry {String(entryNumber).padStart(3, '0')} of {String(total).padStart(3, '0')}</span>
+    </header>
 
-    <article className="detail-copy detail-copy-below">
-      <p className="eyebrow">OFFICE FLORA</p>
-      <h1 className="display detail-title">{entry.flower_name || 'Unknown flower'}</h1>
-      <p className="detail-common">{entry.common_name}</p>
-      <div className="facts">
-        <Fact label="Confidence" value={entry.confidence ? `${entry.confidence}%` : 'Uncertain'} />
-        <Fact label="Captured" value={formatDate(entry.captured_at)} />
-        <Fact label="Arrangement" value={entry.arrangement_style || '—'} />
-        <Fact label="Scientific name" value={entry.scientific_name || '—'} />
-      </div>
-      {colors.length > 0 && <div><p className="eyebrow tiny">PALETTE</p><div className="swatches">{colors.map(c => <span key={c} className="swatch" style={{ background: c }} title={c} />)}</div></div>}
-      <p className="detail-notes">{entry.notes}</p>
-      {entry.design_notes && <div className="design-note"><strong>Design note</strong><p>{entry.design_notes}</p></div>}
-      <div className="tags">{(entry.tags || []).map(tag => <span key={tag}>{tag}</span>)}</div>
+    <article className="book-spread">
+      <section className="image-page">
+        <p className="plate-number">Office Flora · Plate {plate}</p>
+
+        <div className={`image-pair ${hasIllustration ? '' : 'single'}`}>
+          <figure className="image-study">
+            <figcaption>Original photograph</figcaption>
+            <div className="entry-image original-image">
+              <img src={entry.photo_url} alt={`Original photograph of ${entry.flower_name || 'flower arrangement'}`} />
+            </div>
+          </figure>
+
+          {hasIllustration && <figure className="image-study">
+            <figcaption>Botanical study</figcaption>
+            <div className="entry-image botanical-image">
+              <img src={entry.illustration_url} alt={`Botanical study of ${entry.flower_name || 'flower arrangement'}`} />
+            </div>
+          </figure>}
+        </div>
+
+        <div className="plate-footer">
+          <span>{entry.common_name || entry.flower_name || 'Untitled arrangement'}</span>
+          <span>Office Flora</span>
+        </div>
+      </section>
+
+      <aside className="entry-page">
+        <div>
+          <p className="entry-label">Entry {String(entryNumber).padStart(3, '0')}</p>
+          <h1 className="entry-title">{entry.flower_name || 'Unknown flower'}</h1>
+          <p className="scientific-name">{entry.scientific_name || entry.common_name || 'Identification pending'}</p>
+
+          <dl className="entry-facts">
+            <Fact label="Captured" value={formatDate(entry.captured_at)} />
+            <Fact label="Arrangement" value={entry.arrangement_style || '—'} />
+            <Fact label="Common name" value={entry.common_name || '—'} />
+            <Fact label="Confidence" value={entry.confidence ? `${entry.confidence}%` : 'Uncertain'} />
+          </dl>
+
+          {entry.notes && <p className="entry-notes">{entry.notes}</p>}
+
+          {colors.length > 0 && <section className="palette-block" aria-label="Observed color palette">
+            <p className="section-label">Observed palette</p>
+            <div className="swatches">{colors.map((color, colorIndex) =>
+              <span key={`${color}-${colorIndex}`} className="swatch" style={{ backgroundColor: color }} title={color} />
+            )}</div>
+          </section>}
+
+          {entry.design_notes && <section className="design-note">
+            <p className="section-label">Design note</p>
+            <p>{entry.design_notes}</p>
+          </section>}
+
+          {(entry.tags || []).length > 0 && <div className="tags">
+            {entry.tags.map(tag => <span key={tag}>{tag}</span>)}
+          </div>}
+        </div>
+
+        <nav className="reader-navigation" aria-label="Browse archive entries">
+          <button type="button" onClick={onPrevious} disabled={index === 0}>
+            <ChevronLeft size={16} /> Previous
+          </button>
+          <button type="button" onClick={onNext} disabled={index === total - 1}>
+            Next <ChevronRight size={16} />
+          </button>
+        </nav>
+      </aside>
     </article>
   </main>
 }
 
-function Fact({ label, value }) { return <div className="fact"><span>{label}</span><strong>{value}</strong></div> }
-function Centered({ children }) { return <div className="centered">{children}</div> }
-function formatDate(v) { if (!v) return 'Undated'; const [y, m, d] = v.split('-').map(Number); return new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(y, m - 1, d))) }
+function Fact({ label, value }) {
+  return <div><dt>{label}</dt><dd>{value}</dd></div>
+}
+
+function Centered({ children }) {
+  return <div className="centered">{children}</div>
+}
+
+function formatDate(value) {
+  if (!value) return 'Undated'
+  const [year, month, day] = value.split('-').map(Number)
+  return new Intl.DateTimeFormat(undefined, {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(Date.UTC(year, month - 1, day)))
+}
+
+function toRoman(value) {
+  const numerals = [
+    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'],
+    [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+  ]
+  let remaining = value
+  return numerals.reduce((result, [number, numeral]) => {
+    while (remaining >= number) {
+      result += numeral
+      remaining -= number
+    }
+    return result
+  }, '')
+}
 
 export default App
