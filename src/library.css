@@ -1,0 +1,253 @@
+.library-page {
+  padding-top: 48px;
+}
+
+.library-shell {
+  width: min(1180px, 100%);
+  min-height: calc(100vh - 104px);
+  margin: 0 auto;
+  display: grid;
+  align-content: center;
+  gap: 34px;
+}
+
+.library-heading {
+  text-align: center;
+}
+
+.library-kicker {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.library-heading h1 {
+  margin: 0;
+  font-family: 'Eagle Lake', Georgia, serif;
+  font-size: clamp(36px, 6vw, 66px);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.library-heading > p:last-child {
+  margin: 13px 0 0;
+  color: #493f31;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 34px);
+  align-items: end;
+}
+
+.library-book {
+  position: relative;
+  aspect-ratio: .76;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgb(58 42 27 / 58%);
+  border-radius: 2px 6px 6px 2px;
+  box-shadow: 0 18px 38px rgb(54 38 24 / 24%);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.library-book:hover {
+  transform: translateY(-5px) rotate(-.2deg);
+  box-shadow: 0 25px 46px rgb(54 38 24 / 31%);
+}
+
+.library-book-office {
+  background:
+    linear-gradient(rgb(38 58 46 / 84%), rgb(38 58 46 / 84%)),
+    url('./cover-collage/entry-001.webp') center / cover;
+  color: var(--cream);
+}
+
+.library-book-wild {
+  background:
+    radial-gradient(circle at 72% 22%, rgb(248 223 155 / 48%) 0 6%, transparent 6.5%),
+    linear-gradient(145deg, #526b4f, #263a2e 72%);
+  color: #fff2d2;
+}
+
+.library-book-visiting {
+  background:
+    linear-gradient(24deg, transparent 48%, rgb(255 240 211 / 12%) 49% 52%, transparent 53%),
+    linear-gradient(145deg, #aa6d52, #754335 72%);
+  color: #fff2d2;
+}
+
+.library-book-spine {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 9%;
+  border-right: 1px solid rgb(255 255 255 / 18%);
+  background: rgb(35 25 18 / 16%);
+  box-shadow: inset -10px 0 18px rgb(0 0 0 / 12%);
+}
+
+.library-book-volume {
+  position: absolute;
+  top: 18px;
+  right: 17px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .16em;
+}
+
+.library-book-copy {
+  position: absolute;
+  left: 15%;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.library-book-title {
+  display: block;
+  font-family: 'Eagle Lake', Georgia, serif;
+  font-size: clamp(23px, 3.5vw, 42px);
+  line-height: 1.02;
+}
+
+.library-book-subtitle {
+  display: block;
+  margin-top: 13px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.library-book-count {
+  position: absolute;
+  left: 15%;
+  bottom: 19px;
+  font-family: Georgia, serif;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.library-back {
+  position: absolute;
+  z-index: 10;
+  top: 28px;
+  left: clamp(18px, 4vw, 58px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 7px 12px;
+  border: 1px solid #8f7754;
+  border-radius: 999px;
+  background: #ead9b4;
+  cursor: pointer;
+}
+
+.empty-book-message {
+  margin: 18px 0 0;
+  color: #3e3329;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.archive-cover-wild,
+.archive-cover-visiting {
+  background: #263a2e;
+}
+
+.archive-cover-visiting {
+  background: #8f5a47;
+}
+
+.collection-cover-art {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: .82;
+}
+
+.collection-stem {
+  position: absolute;
+  bottom: -10%;
+  width: 2px;
+  height: 72%;
+  background: rgb(239 226 184 / 60%);
+  transform-origin: bottom;
+}
+
+.collection-stem-one {
+  left: 38%;
+  transform: rotate(-12deg);
+}
+
+.collection-stem-two {
+  left: 62%;
+  transform: rotate(13deg);
+}
+
+.collection-bloom {
+  position: absolute;
+  width: 82px;
+  aspect-ratio: 1;
+  border: 2px solid rgb(255 236 192 / 70%);
+  border-radius: 50% 46% 52% 44%;
+  transform: rotate(18deg);
+}
+
+.collection-bloom-one {
+  left: 23%;
+  top: 23%;
+}
+
+.collection-bloom-two {
+  right: 19%;
+  top: 32%;
+  width: 62px;
+}
+
+.collection-bloom-three {
+  left: 48%;
+  top: 13%;
+  width: 48px;
+}
+
+@media (max-width: 800px) {
+  .library-shell {
+    align-content: start;
+    padding-top: 18px;
+  }
+
+  .library-grid {
+    grid-template-columns: 1fr;
+    width: min(360px, 88vw);
+    margin: 0 auto;
+    gap: 24px;
+  }
+
+  .library-book {
+    aspect-ratio: .8;
+  }
+
+  .library-book-title {
+    font-size: clamp(30px, 10vw, 42px);
+  }
+
+  .library-page {
+    padding-top: 34px;
+  }
+
+  .library-back {
+    top: 18px;
+  }
+}
