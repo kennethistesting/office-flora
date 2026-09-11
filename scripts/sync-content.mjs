@@ -20,10 +20,9 @@ const folders = (await readdir(contentRoot, { withFileTypes: true })).filter(d =
 
 for (const folder of folders) {
   const dir = join(contentRoot, folder.name)
-  const manifestPath = join(dir, 'entry.json')
   let entry
   try {
-    entry = JSON.parse(await readFile(manifestPath, 'utf8'))
+    entry = JSON.parse(await readFile(join(dir, 'entry.json'), 'utf8'))
   } catch {
     console.warn(`Skipping ${folder.name}: no valid entry.json`)
     continue
@@ -33,29 +32,29 @@ for (const folder of folders) {
     throw new Error(`${folder.name}: slug, photo/photo_base64_parts, and captured_at are required`)
   }
 
-  const photoExt = entry.photo ? extname(entry.photo).toLowerCase() : '.jpg'
   const photoPath = entry.photo
-    ? await uploadAsset('flora-photos', dir, entry.photo, `${entry.slug}/photo${photoExt}`)
+    ? await uploadAsset('flora-photos', dir, entry.photo, `${entry.slug}/photo${extname(entry.photo).toLowerCase()}`)
     : await uploadBase64Parts('flora-photos', dir, entry.photo_base64_parts, `${entry.slug}/photo.jpg`, 'image/jpeg')
   const photoUrl = supabase.storage.from('flora-photos').getPublicUrl(photoPath).data.publicUrl
 
-  let illustrationPath = null
   let illustrationUrl = null
   if (entry.illustration) {
-    illustrationPath = await uploadAsset('flora-illustrations', dir, entry.illustration, `${entry.slug}/illustration${extname(entry.illustration).toLowerCase()}`)
-    illustrationUrl = supabase.storage.from('flora-illustrations').getPublicUrl(illustrationPath).data.publicUrl
+    const path = await uploadAsset('flora-illustrations', dir, entry.illustration, `${entry.slug}/illustration${extname(entry.illustration).toLowerCase()}`)
+    illustrationUrl = supabase.storage.from('flora-illustrations').getPublicUrl(path).data.publicUrl
   } else if (entry.illustration_base64_parts) {
-    illustrationPath = await uploadBase64Parts('flora-illustrations', dir, entry.illustration_base64_parts, `${entry.slug}/illustration.jpg`, 'image/jpeg')
-    illustrationUrl = supabase.storage.from('flora-illustrations').getPublicUrl(illustrationPath).data.publicUrl
+    const path = await uploadBase64Parts('flora-illustrations', dir, entry.illustration_base64_parts, `${entry.slug}/illustration.jpg`, 'image/jpeg')
+    illustrationUrl = supabase.storage.from('flora-illustrations').getPublicUrl(path).data.publicUrl
   }
+
+  const colors = Array.isArray(entry.colors)
+    ? entry.colors
+    : Array.isArray(entry.dominant_colors) ? entry.dominant_colors : []
 
   const payload = {
     slug: entry.slug,
     captured_at: entry.captured_at,
     status: entry.status === 'published' ? 'published' : 'draft',
-    photo_path: photoPath,
     photo_url: photoUrl,
-    illustration_path: illustrationPath,
     illustration_url: illustrationUrl,
     flower_name: entry.flower_name || null,
     common_name: entry.common_name || null,
@@ -63,9 +62,7 @@ for (const folder of folders) {
     confidence: Number.isFinite(entry.confidence) ? entry.confidence : null,
     arrangement_style: entry.arrangement_style || null,
     notes: entry.notes || null,
-    design_notes: entry.design_notes || null,
-    dominant_colors: Array.isArray(entry.dominant_colors) ? entry.dominant_colors : [],
-    colors: Array.isArray(entry.dominant_colors) ? entry.dominant_colors : [],
+    colors,
     tags: Array.isArray(entry.tags) ? entry.tags : [],
     book: entry.book || 'office',
     updated_at: new Date().toISOString(),
@@ -78,9 +75,8 @@ for (const folder of folders) {
 
 async function uploadAsset(bucket, dir, filename, destination) {
   const bytes = await readFile(join(dir, filename))
-  const contentType = mimeType(filename)
   const { error } = await supabase.storage.from(bucket).upload(destination, bytes, {
-    contentType,
+    contentType: mimeType(filename),
     upsert: true,
   })
   if (error) throw error
@@ -91,10 +87,7 @@ async function uploadBase64Parts(bucket, dir, filenames, destination, contentTyp
   if (!Array.isArray(filenames) || filenames.length === 0) throw new Error(`Missing base64 parts for ${destination}`)
   const parts = await Promise.all(filenames.map(filename => readFile(join(dir, filename), 'utf8')))
   const bytes = Buffer.from(parts.join('').replace(/\s+/g, ''), 'base64')
-  const { error } = await supabase.storage.from(bucket).upload(destination, bytes, {
-    contentType,
-    upsert: true,
-  })
+  const { error } = await supabase.storage.from(bucket).upload(destination, bytes, { contentType, upsert: true })
   if (error) throw error
   return destination
 }
